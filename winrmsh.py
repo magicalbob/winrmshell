@@ -32,7 +32,7 @@ def process_command(s, c):
   o=o.split('\\n')
 
   for l in o:
-    print(l)
+    print(l.replace('\\\\','\\'))
 
 WINRM_HOST, WINRM_USER, WINRM_PASS = handle_args()
 
