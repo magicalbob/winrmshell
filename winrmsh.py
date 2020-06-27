@@ -27,9 +27,12 @@ def process_command(s, c):
 
   r = s.run_cmd(c)
   
-  o=r.std_out
+  o=str(r.std_out)
+  o=o.replace('\\r\\n', '\n')
+  o=o.split('\\n')
 
-  print(o)
+  for l in o:
+    print(l)
 
 WINRM_HOST, WINRM_USER, WINRM_PASS = handle_args()
 
