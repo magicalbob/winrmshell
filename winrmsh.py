@@ -41,4 +41,5 @@ server_session = connect_to_server(WINRM_HOST, WINRM_USER, WINRM_PASS)
 while True:
   command = input('$ ')
 
-  process_command(server_session, command)
+  if len(command) > 0:
+    process_command(server_session, command)
