@@ -15,10 +15,24 @@ def handle_args():
 
   return WINRM_HOST, WINRM_USER, WINRM_PASS
 
+def connect_to_server(h, u, p):
+  s = winrm.Session(h,auth=(u, p))
+
+  return s
+
+def process_command(s, c):
+  if c == "exit":
+    print("Bye!")
+    sys.exit(0)
+
+  r = s.run_cmd(c)
+  print(r.std_out)
+
 WINRM_HOST, WINRM_USER, WINRM_PASS = handle_args()
 
-s = winrm.Session(WINRM_HOST,auth=(WINRM_USER,WINRM_PASS))
+server_session = connect_to_server(WINRM_HOST, WINRM_USER, WINRM_PASS)
 
-r = s.run_cmd('ipconfig')
+while True:
+  command = input('$ ')
 
-print(r.std_out)
+  process_command(server_session, command)
