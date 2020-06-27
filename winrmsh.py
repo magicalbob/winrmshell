@@ -26,7 +26,10 @@ def process_command(s, c):
     sys.exit(0)
 
   r = s.run_cmd(c)
-  print(r.std_out)
+  
+  o=r.std_out
+
+  print(o)
 
 WINRM_HOST, WINRM_USER, WINRM_PASS = handle_args()
 
