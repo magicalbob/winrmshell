@@ -27,7 +27,15 @@ def process_command(s, c):
 
   r = s.run_cmd(c)
   
-  o=str(r.std_out,'utf-8')
+  o=str(r.std_out, 'utf-8')
+
+  if len(o) == 0:
+    o=str(r.std_err, 'utf-8')
+
+  if len(o) == 0:
+    if r.status_code > 0:
+      print("OOPS! WinRM Status Code: %s" % (r.status_code))
+
   o=o.replace('\\r\\n', '\n')
   o=o.split('\\n')
 
