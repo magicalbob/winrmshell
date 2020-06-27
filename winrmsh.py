@@ -27,7 +27,7 @@ def process_command(s, c):
 
   r = s.run_cmd(c)
   
-  o=str(r.std_out)
+  o=str(r.std_out,'utf-8')
   o=o.replace('\\r\\n', '\n')
   o=o.split('\\n')
 
