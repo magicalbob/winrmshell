@@ -25,22 +25,25 @@ def process_command(s, c):
     print("Bye!")
     sys.exit(0)
 
-  r = s.run_cmd(c)
+  try:
+    r = s.run_cmd(c)
   
-  o=str(r.std_out, 'utf-8')
+    o=str(r.std_out, 'utf-8')
 
-  if len(o) == 0:
-    o=str(r.std_err, 'utf-8')
+    if len(o) == 0:
+      o=str(r.std_err, 'utf-8')
 
-  if len(o) == 0:
-    if r.status_code > 0:
-      print("OOPS! WinRM Status Code: %s" % (r.status_code))
+    if len(o) == 0:
+      if r.status_code > 0:
+        print("OOPS! WinRM Status Code: %s" % (r.status_code))
 
-  o=o.replace('\\r\\n', '\n')
-  o=o.split('\\n')
+    o=o.replace('\\r\\n', '\n')
+    o=o.split('\\n')
 
-  for l in o:
-    print(l.replace('\\\\','\\'))
+    for l in o:
+      print(l.replace('\\\\','\\'))
+  except Exception as e:
+    print("OOPS! WinRM Exception: %s" % (e))
 
 WINRM_HOST, WINRM_USER, WINRM_PASS = handle_args()
 
