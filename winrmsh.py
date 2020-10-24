@@ -20,13 +20,15 @@ def connect_to_server(h, u, p):
 
   return s
 
-def process_command(s, c):
+def process_command(s, c, w):
   if c == "exit":
     print("Bye!")
     sys.exit(0)
 
+  new_command="cd %s ; %s" % (w, c)
+
   try:
-    r = s.run_cmd(c)
+    r = s.run_ps(new_command)
   
     o=str(r.std_out, 'utf-8')
 
@@ -40,8 +42,13 @@ def process_command(s, c):
     o=o.replace('\\r\\n', '\n')
     o=o.split('\\n')
 
-    for l in o:
-      print(l.replace('\\\\','\\'))
+    if c.split(' ')[0] == 'cd':
+      w=c.replace('cd ','')
+    else:
+      for l in o:
+        print(l.replace('\\\\','\\'))
+
+    return(w)
   except Exception as e:
     print("OOPS! WinRM Exception: %s" % (e))
 
@@ -49,8 +56,10 @@ WINRM_HOST, WINRM_USER, WINRM_PASS = handle_args()
 
 server_session = connect_to_server(WINRM_HOST, WINRM_USER, WINRM_PASS)
 
+working_dir=str(server_session.run_cmd('cd').std_out,'utf-8').replace('\n','').replace('\r','')
+
 while True:
   command = input('$ ')
 
   if len(command) > 0:
-    process_command(server_session, command)
+    working_dir=process_command(server_session, command, working_dir)
