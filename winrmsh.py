@@ -58,8 +58,12 @@ server_session = connect_to_server(WINRM_HOST, WINRM_USER, WINRM_PASS)
 
 working_dir=str(server_session.run_cmd('cd').std_out,'utf-8').replace('\n','').replace('\r','')
 
+command = ''
 while True:
+  old_command = command
   command = input('$ ')
+  if command == '!':
+    command = old_command
 
   if len(command) > 0:
     working_dir=process_command(server_session, command, working_dir)
